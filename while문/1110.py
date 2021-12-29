@@ -1,9 +1,11 @@
 n = int(input())
-s = n / 10
-i = n % 10
+first = n
 cnt = 0
+
 while True :
-    a = n / 10 + n % 10
-    n = n % 10 * 10 + a % 10
-    if n == a :
+    cnt += 1
+    temp = n % 10 + int(n /10)
+    n = n % 10 * 10 + temp % 10
+    if n == first :
+        print(cnt)
         break
