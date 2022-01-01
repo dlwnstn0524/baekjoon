@@ -1,11 +1,7 @@
-a, b, v = map(int, input().split())
-h = 0
-day = 0
+import math
 
-while True :
-    h += a
-    day += 1
-    if h >= v:
-        print(day)
-        break
-    h -= b
+def function(a, b, v):
+    return math.ceil((v-b)/(a-b))
+
+a, b, v = map(int, input().split())
+print(function(a,b,v))
