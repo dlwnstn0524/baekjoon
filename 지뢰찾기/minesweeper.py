@@ -114,19 +114,20 @@ def Unknowns_reveal(board, size=18):
         for (i,j) in [(i,j) for i in range(size) for j in range(size)]:
             if board[i][j] != base:
                 continue
-            mines = collectWindow(i,j,board, -1)            
+            mines = collectWindow(board, i, j, -1)            
             num_mines = len(mines)                      # (i, j) 주변에 지뢰가 몇개인지
-            Unknowns = collectWindow(i,j, board, None)  
+            Unknowns = collectWindow(board, i, j, None)  
             num_Unknowns = len(Unknowns)                # (i, j) 주변에 아직 열리지 않은 Unknowns의 개수
 
             if num_Unknowns > 0:                        # 알아내야 하는 격자가 남아있다면
-                if (num_mines + num_Unknowns == base-1):                         
-                    for (s, t) in Unknowns: 
-                        v = reveal(board, s, t)   
-                        find_auto_reveal(board)      
-                        Unknowns_reveal(board) 
-                        if v == 0:
+                if num_mines + num_Unknowns == base + 1:           
+                    for (s, t) in Unknowns:
+                        v = reveal(board, s, t)
+                        if v == 0 :
                             reveal_zeros(board, s, t)
+                        find_mines(board)
+                        break
+                        
                 else:
                     continue
     return
@@ -137,14 +138,20 @@ def find_mines(board, size = 18):       # 지뢰 찾기 함수
     여러분이 생각한 지뢰찾는 방법을 코딩합니다.                              
     반드시 있어야하는 함수입니다. 평가할 때, 이 함수를 호출합니다.
     """
-
+    prev = 0
+    now = 0
     while True:
+        mines = None
+        prev = now
         find_auto_reveal(board)
-        for (i,j) in [(i,j) for i in range(size) for j in range(size)]:    
-            mines = collectWindow(board, i, j, -1)            # 지금까지 찾은 지뢰의 좌표를 배열에 저장            
-                                                              # 지뢰의 좌표가 더이상 변하지 않으면(auto_reveal이 불가능하면) Unknowns_reveal -> Unknowns이 없을 때 까지 
-
-    printBoard(board, size)
+        global gameBoard
+        mines = gameBoard.collectAll(board)
+        now = len(mines)
+        if now == prev :
+            Unknowns_reveal(board)
+            break
+    printBoard(board,size)
+    
 
 
 if __name__ == "__main__":      # board에서 minesweeper로 돌아오면 __name__은 __main__이 됨.
