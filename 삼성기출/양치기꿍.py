@@ -1,9 +1,9 @@
 import sys
 sys.setrecursionlimit(10**6)
 # dfs 탐색
-def dfs(x, y):
+def dfs(battle, x, y):
     if x <= -1 or x >= r or y <= -1 or y >= c:
-        return False
+        return
 
     if graph[x][y] != "#":
 
@@ -14,21 +14,16 @@ def dfs(x, y):
         graph[x][y] = "#"
 
         # 상, 하, 좌, 우의 위치들도 모두 재귀적으로 호출
-        dfs(x + 1, y)
-        dfs(x - 1, y)
-        dfs(x, y + 1)
-        dfs(x, y - 1)
-
-        return True
-    return False
+        dfs(battle, x + 1, y)
+        dfs(battle, x - 1, y)
+        dfs(battle, x, y + 1)
+        dfs(battle, x, y - 1)
+    return
 
 r, c = map(int, input().split())
 
 # 각 노드가 연결된 정보를 표현
 graph = [list(map(str, input())) for _ in range(r)]
-
-# 각 구역에서 누가 살아남았는지 비교하기 위한 리스트
-battle = []
 
 # 각 구역에서 승리한 늑대와 양
 res_v = []
@@ -38,7 +33,8 @@ for i in range(r):
     for j in range(c):
         # 울타리가 아니라면 탐색
         if graph[i][j] != "#":
-            dfs(i, j)
+            battle = []
+            dfs(battle, i, j)
 
             # 각 구역마다 양과 늑대 중 누가 살아남는지 비교
             if battle.count('v') < battle.count('k'):
@@ -46,8 +42,6 @@ for i in range(r):
             else:
                 res_v.append(battle.count('v'))
 
-            # 새로운 구역을 위해 비운다.
-            battle = []
 
 # 각 구역에서 승리한 양과 늑대의 합을 출력
 print(sum(res_k), sum(res_v))

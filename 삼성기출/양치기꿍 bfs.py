@@ -17,9 +17,7 @@ def BFS(x, y):
     visited[x][y] = 1
     q.append([x,y])
     while q:
-        x, y = q[0][0], q[0][1]
-        del q[0]
-
+        x, y = q.popleft()
         if board[x][y] == "v":
             w += 1
         if board[x][y] == "k":
