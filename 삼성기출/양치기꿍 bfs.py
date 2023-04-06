@@ -26,7 +26,7 @@ def BFS(x, y):
             nx = x + ddx
             ny = y + ddy
             if 0 <= nx < R and 0 <= ny < C and board[nx][ny] != "#" and visited[nx][ny] == 0:
-                q.append([nx,ny])
+                q.append([nx, ny])
                 visited[nx][ny] = 1
 wolf = 0
 sheep = 0

@@ -23,13 +23,13 @@ def dfs(battle, x, y):
 r, c = map(int, input().split())
 
 # 각 노드가 연결된 정보를 표현
-graph = [list(map(str, input())) for _ in range(r)]
+graph = [list(input().rstrip()) for _ in range(r)]
 
 # 각 구역에서 승리한 늑대와 양
 res_v = []
 res_k = []
 
-for i in range(r):
+for i in range(n):
     for j in range(c):
         # 울타리가 아니라면 탐색
         if graph[i][j] != "#":
