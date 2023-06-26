@@ -1,8 +1,7 @@
 def combi(arr, n):
     result = []
     if n == 0:
-        result = [[]]
-        return result
+        return [[]]
     for i in range(len(arr)):
         elem = arr[i]
         rest_arr = arr[i+1:]
@@ -10,4 +9,4 @@ def combi(arr, n):
             result.append([elem] + c)
     return result
 
-print(combi([1,2,3,4], 3))
+print(combi([1,2,3,4], 2))
