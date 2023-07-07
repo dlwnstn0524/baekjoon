@@ -1,14 +1,11 @@
+import sys
+
+input = sys.stdin.readline
+
 n = int(input())
-result = [0 for i in range(n)]
-cnt = 0
+arr = list(map(int, input().split()))
 
-locs= list(map(int, (input().split(' ')))) #입력 완료
-
-for i in range(len(locs)):
-    for j in range(len(locs)):
-        if locs[i] > locs[j]:
-            cnt += 1
-    result[i] = cnt
-    cnt = 0
-
-print(result)
+arr2 = sorted(list(set(arr)))
+dic = {arr2[i] : i for i in range(len(arr2))}
+for i in arr:
+    print(dic[i], end = ' ')
