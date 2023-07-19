@@ -1,5 +1,6 @@
 n = int(input())
 arr = list(map(int, input().split()))
+arr1 = []
 arr2 = []
 
 
@@ -17,10 +18,13 @@ else:
             break
     if flag:
         print("YES")
+        r1, r2 = r + 1, r
+        f1, f2 = arr[0] + 1, -1
         for i in range(n):
-            print(arr[i] + (r-1)*i + 1, end = " ")
-            arr2.append(arr[i] + (r-1)*i + 1)
+            arr1.append(f1 + i*r1)
+            arr2.append(f2 + i*r2)
+        for i in range(n):
+            print(arr1[i], end= " ")
         print()
-
-        for j in range(n):
-            print(arr[j] - arr2[j], end= " ")
+        for i in range(n):
+            print(arr2[i], end= " ")
