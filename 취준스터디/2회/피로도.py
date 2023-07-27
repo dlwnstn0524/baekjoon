@@ -1,5 +1,5 @@
 from itertools import permutations
-​
+
 def solution(k, dungeons):
     answer = 0
     
