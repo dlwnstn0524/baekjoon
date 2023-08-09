@@ -1,7 +1,12 @@
-from collections import Counter
 def solution(clothes):
-    clothes_dic = Counter([clothe[1] for clothe in clothes])
-    count = 1
-    for count_clothes in clothes_dic:
-        count = count*(count_clothes + 1)
-    return count -1
+    answer = 0
+    clothe_dic = dict()
+    for name, cate in clothes:
+        if cate not in clothe_dic.keys():
+            clothe_dic[cate] = 1
+        else:
+            clothe_dic[cate] += 1
+    cnt = 1
+    for i in clothe_dic.keys():
+        cnt *= (clothe_dic[i] + 1)
+    return cnt - 1
