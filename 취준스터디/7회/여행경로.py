@@ -7,22 +7,27 @@ def solution(tickets):
             routes[key].append(value)
         return routes
 
-    # 스택을 사용한 DFS
-    def dfs():
-        stack = ["ICN"]
-        path = []  # 가려고하는 경로를 저장하는 변수
-        while len(stack) > 0:  # stack이 비어있을 때까지
-            top = stack[-1]
-            # 특정 공항에서 출발하는 표가 없다면 또는 있지만 티켓을 다 써버린 경우
-            if top not in routes or len(routes[top]) == 0:
-                path.append(stack.pop())
-            else:
-                stack.append(routes[top].pop(0))
-        return path[::-1]
+    # 재귀 호출을 사용한 DFS
+    def dfs(key, footprint):
+        if len(footprint) == N + 1:
+            return footprint
+
+        for idx, country in enumerate(routes[key]):
+            routes[key].pop(idx)
+
+            fp = footprint[:] # deepcopy
+            fp.append(country)
+
+            ret = dfs(country, fp)
+            if ret: return ret # 모든 티켓을 사용해 통과한 경우
+
+            routes[key].insert(idx, country) # 통과 못했으면 티켓 반환
 
     routes = init_graph()
     for r in routes:
         routes[r].sort()
 
-    answer = dfs()
+    N = len(tickets)
+    answer = dfs("ICN", ["ICN"])
+
     return answer
