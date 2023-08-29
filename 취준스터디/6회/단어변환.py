@@ -3,7 +3,7 @@ from collections import deque
 def solution(begin, target, words):
     answer = 0
     if target not in words:
-        return answer
+        return 0
     n = len(begin)
     q = deque()
     q.append([begin, 0])
