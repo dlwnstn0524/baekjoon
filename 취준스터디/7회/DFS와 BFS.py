@@ -1,45 +1,38 @@
-# 1260 DFS/BFS 
 from collections import deque
-# n: 정점의 개수, m: 간선의 개수, v:탐색을 시작할 정점의 번호
-n, m, v = map(int,input().split())
 
-graph = [[] for _ in range(n+1)]
+N, M, V = map(int, input().split())
 
-for i in range(m):
-    a,b = map(int,input().split())
-    graph[a].append(b)
-    graph[b].append(a)
-    graph[a].sort()
-    graph[b].sort()
+graph = [[False] * (N + 1) for _ in range(N + 1)]
 
-def dfs(graph, v, visited):
-    # 현재 노드를 방문 처리
-    visited[v] = True
-    print(v, end=' ')
-    # 현재 노드와 연결된 다른 노드를 재귀적으로 방문
-    for j in graph[v]:
-        if not visited[j]:
-            dfs(graph, j, visited)
+for _ in range(M):
+    a, b = map(int, input().split())
+    graph[a][b] = True
+    graph[b][a] = True
 
-# BFS 함수 정의
-def bfs(graph, start, visited):
-    # 큐(Queue) 구현을 위해 deque 라이브러리 사용
-    queue = deque([start])
-    # 현재 노드를 방문 처리
-    visited[start] = True
-    # 큐가 빌 때까지 반복
-    while queue:
-        # 큐에서 하나의 원소를 뽑아 출력
-        v = queue.popleft()
-        print(v, end=' ')
-        # 해당 원소와 연결된, 아직 방문하지 않은 원소들을 큐에 삽입
-        for k in graph[v]:
-            if not visited[k]:
-                queue.append(k)
-                visited[k] = True
-                
-visited = [False] * (n+1)        
-dfs(graph, v, visited)
-print("")
-visited = [False] * (n+1)
-bfs(graph, v, visited)
+visited1 = [False] * (N + 1)  # dfs의 방문기록
+visited2 = [False] * (N + 1)  # bfs의 방문기록
+
+
+def bfs(V):
+    q = deque([V])  # pop메서드의 시간복잡도가 낮은 덱 내장 메서드를 이용한다
+    visited2[V] = True  # 해당 V 값을 방문처리
+    while q:  # q가 빌때까지 돈다.
+        V = q.popleft()  # 큐에 있는 첫번째 값 꺼낸다.
+        print(V, end=" ")  # 해당 값 출력
+        for i in range(1, N + 1):  # 1부터 N까지 돈다
+            if not visited2[i] and graph[V][i]:  # 만약 해당 i값을 방문하지 않았고 V와 연결이 되어 있다면
+                q.append(i)  # 그 i 값을 추가
+                visited2[i] = True  # i 값을 방문처리
+
+
+def dfs(V):
+    visited1[V] = True  # 해당 V값 방문처리
+    print(V, end=" ")
+    for i in range(1, N + 1):
+        if not visited1[i] and graph[V][i]:  # 만약 i값을 방문하지 않았고 V와 연결이 되어 있다면
+            dfs(i)  # 해당 i 값으로 dfs를 돈다.(더 깊이 탐색)
+
+
+dfs(V)
+print()
+bfs(V)
