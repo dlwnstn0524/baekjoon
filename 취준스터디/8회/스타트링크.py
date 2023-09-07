@@ -1,21 +1,23 @@
+import sys
 from collections import deque
 
-f, s, g, u, d = map(int, input().split())
-floor = [0] * (f+1)
-flag = False
+def bfs(v):
+    q = deque([v])
+    visited[v] = 1
+    while q:
+        v = q.popleft()
+        if v == G:
+            return count[G]
+        for i in (v+U, v-D): #U만큼 위로 or D만큼 아래로
+            if 0 < i <= F and not visited[i]:
+                visited[i] = 1
+                count[i] = count[v] + 1
+                q.append(i)
+    if count[G] == 0:
+        return "use the stairs"
 
-q = deque()
-q.append(s)
-while q:
-    x = q.popleft()
-    if x == g:
-        break
-    for nx in (x+u, x-d):
-        if 0 <= nx <= f and floor[nx] == 0:
-            floor[nx] = floor[x] + 1
-            q.append(nx)
-
-if floor[g] == 0 :
-    print("use the stairs")
-else :
-    print(floor[g])
+input = sys.stdin.readline
+F, S, G, U, D = map(int, input().split())
+visited = [0 for i in range(F+1)]
+count = [0 for i in range(F+1)]
+print(bfs(S))
