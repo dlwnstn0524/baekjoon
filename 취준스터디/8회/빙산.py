@@ -1,78 +1,60 @@
-def count_zeros(matrix):
-    # 이차원 배열에서 각 칸에 대해 상하좌우에 있는 0의 개수를 반환하는 함수
-    rows, cols = len(matrix), len(matrix[0])
-    zero_counts = [[0] * cols for _ in range(rows)]
+import sys
+from collections import deque
+input = sys.stdin.readline
 
-    for i in range(rows):
-        for j in range(cols):
-            zero_counts[i][j] = 0
-            if matrix[i][j] != 0:
-                if i > 0:
-                    zero_counts[i][j] += (matrix[i - 1][j] == 0)
-                if i < rows - 1:
-                    zero_counts[i][j] += (matrix[i + 1][j] == 0)
-                if j > 0:
-                    zero_counts[i][j] += (matrix[i][j - 1] == 0)
-                if j < cols - 1:
-                    zero_counts[i][j] += (matrix[i][j + 1] == 0)
 
-    return zero_counts
+def bfs(x, y):
+    q = deque([(x, y)])
+    visited[x][y] = 1
+    seaList = []
 
-def decrease_numbers(matrix, zero_counts):
-    # 각 칸의 숫자를 0의 개수에 따라 조정하는 함수
-    rows, cols = len(matrix), len(matrix[0])
-    modified = False
+    while q:
+        x, y = q.popleft()
+        sea = 0
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if 0 <= nx < n and 0 <= ny < m:
+                if not graph[nx][ny]:
+                    sea += 1
+                elif graph[nx][ny] and not visited[nx][ny]:
+                    q.append((nx, ny))
+                    visited[nx][ny] = 1
+        if sea > 0:
+            seaList.append((x, y, sea))
+    for x, y, sea in seaList:
+        graph[x][y] = max(0, graph[x][y] - sea)
 
-    for i in range(rows):
-        for j in range(cols):
-            if zero_counts[i][j] > 0:
-                new_value = matrix[i][j] - zero_counts[i][j]
-                if new_value < 0:
-                    new_value = 0
-                if matrix[i][j] != new_value:
-                    matrix[i][j] = new_value
-                    modified = True
+    return 1
 
-    return matrix, modified
 
-def count_clusters(matrix):
-    # 0이 아닌 숫자의 덩어리 개수를 세는 함수 (DFS 사용)
-    def dfs(row, col):
-        if row < 0 or row >= rows or col < 0 or col >= cols or matrix[row][col] == 0 or visited[row][col]:
-            return
-        visited[row][col] = True
-        for dr, dc in directions:
-            dfs(row + dr, col + dc)
+n, m = map(int, input().split())
+graph = [list(map(int, input().split())) for _ in range(n)]
 
-    rows, cols = len(matrix), len(matrix[0])
-    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-    visited = [[False] * cols for _ in range(rows)]
-    cluster_count = 0
+ice = []
+for i in range(n):
+    for j in range(m):
+        if graph[i][j]:
+            ice.append((i, j))
 
-    for i in range(rows):
-        for j in range(cols):
-            if matrix[i][j] != 0 and not visited[i][j]:
-                dfs(i, j)
-                cluster_count += 1
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+year = 0
 
-    return cluster_count
+while ice:
+    visited = [[0] * m for _ in range(n)]
+    delList = []
+    group = 0
+    for i, j in ice:
+        if graph[i][j] and not visited[i][j]:
+            group += bfs(i, j)
+        if graph[i][j] == 0:
+            delList.append((i, j))
+    if group > 1:
+        print(year)
+        break
+    ice = sorted(list(set(ice) - set(delList)))
+    year += 1
 
-def min_steps_to_split_clusters(matrix):
-    steps = 0
-    while True:
-        zero_counts = count_zeros(matrix)
-        matrix, modified = decrease_numbers(matrix, zero_counts)
-        if not modified:
-            break
-        steps += 1
-    return steps
-
-# 예제
-matrix = [
-    [1, 0, 0, 2],
-    [0, 3, 0, 0],
-    [0, 0, 0, 4]
-]
-
-result = min_steps_to_split_clusters(matrix)
-print(result)  # 출력: 3
+if group < 2:
+    print(0)
