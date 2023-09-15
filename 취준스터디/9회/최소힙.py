@@ -1,13 +1,12 @@
 N = int(input())
+heap = []
 for _ in range(N):
-    heap = []
     x = int(input())
     if x == 0:
         if len(heap) == 0 :
             print(0)
         else:
-            m = min(heap)
-            heap.pop(m)
-            print(m)
+            print(heap.pop())
     else:
         heap.append(x)
+        heap.sort(reverse=True)
