@@ -10,7 +10,7 @@ for _ in range(numbers):
     if num != 0:
         heapq.heappush(heap, num)
     else:
-        try:
+        if len(heap) != 0 :
             print(heapq.heappop(heap))
-        except:
+        else:
             print(0)
