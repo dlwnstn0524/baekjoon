@@ -16,7 +16,6 @@ for _ in range(int(sys.stdin.readline())):
 	elif command[0] == 'B':
 	    if st1:
         	st1.pop()
-		
     else:
 	    st1.append(command[1])
         
