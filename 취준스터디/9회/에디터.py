@@ -1,5 +1,5 @@
 string = input()
-cosor = len(string) - 1
+cosor = len(string)
 for _ in range(int(input())):
     cmd = input()
     if cmd == "L":
