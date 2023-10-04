@@ -1,61 +1,23 @@
 import sys
 
+N = int(sys.stdin.readline().strip())
+balls = str(sys.stdin.readline().strip())
+cnt = []
 
-n = int(sys.stdin.readline())
-m = list(map(str, sys.stdin.readline().strip()))
-answer = []
-blue = 0
-red = 0
-cnt = 0
+# 우측으로 레드 모으기
+rexplore = balls.rstrip('R')
+cnt.append(rexplore.count('R'))
 
-# 우측으로 레드 보내기
-for i in range(n):
-    if m[i] == "R":
-        red += 1
+# 우측으로 블루 모으기
+rexplore = balls.rstrip('B')
+cnt.append(rexplore.count('B'))
 
-    if m[i] == "B" and red:
-        cnt += red
-        red = 0
+# 좌측으로 레드 모으기
+lexplore = balls.lstrip('R')
+cnt.append(lexplore.count('R'))
 
-answer.append(cnt)
+# 좌측으로 블루 모으기
+lexplore = balls.lstrip('B')
+cnt.append(lexplore.count('B'))
 
-# 우측으로 블루 보내기
-cnt = 0
-for i in range(n):
-    if m[i] == "B":
-        blue += 1
-
-    if m[i] == "R" and blue:
-        cnt += blue
-        blue = 0
-
-answer.append(cnt)
-
-# 좌측으로 레드 보내기
-m.reverse()
-cnt = 0
-red = 0
-for i in range(n):
-    if m[i] == "R":
-        red += 1
-
-    if m[i] == "B" and red:
-        cnt += red
-        red = 0
-
-answer.append(cnt)
-
-
-# 좌측으로 블루 보내기
-blue = 0
-cnt = 0
-for i in range(n):
-    if m[i] == "B":
-        blue += 1
-
-    if m[i] == "R" and blue:
-        cnt += blue
-        blue = 0
-
-answer.append(cnt)
-print(min(answer))
+print(min(cnt))
