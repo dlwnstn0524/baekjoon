@@ -1,9 +1,8 @@
 def solution(k, m, score):
     answer = 0
-    while True: 
-        if len(score) < m:
-            break
-        score.sort(reverse=True)
-        answer += min(score[:m])*m
-        score = score[m:]
+    score.sort(reverse=True)
+    for i in range(0, len(score), m):
+        temp = score[i:i+m]
+        if len(temp) == m:
+            answer += min(temp)*m
     return answer
